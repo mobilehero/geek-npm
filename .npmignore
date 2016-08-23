@@ -1,0 +1,10 @@
+tmp
+.DS_Store
+node_modules
+npm-debug.log
+test
+dist
+build
+cov
+coverage
+npm-scripts

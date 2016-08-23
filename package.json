@@ -1,0 +1,41 @@
+{
+  "name": "@geek/npm",
+  "version": "0.0.1-beta.1",
+  "description": "npm api with promises",
+  "keywords": [],
+  "homepage": "git://github.com/mobilehero/geek-npm",
+  "bugs": {
+    "url": "https://github.com/mobilehero/geek-npm/issues",
+    "email": "support@mobilehero.me"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Brenton House",
+    "email": "brenton.house@gmail.com",
+    "url": "https://github.com/brentonhouse"
+  },
+  "main": "./npm.js",
+  "scripts": {
+    "add": "git add -A",
+    "preadd-version": "npm run add",
+    "add-version": "node npm-scripts/version",
+    "push": "npm run commit --",
+    "commit": "npm run add-version --",
+    "postpush": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mobilehero/geek-npm.git"
+  },
+  "devDependencies": {
+    "lodash": "^4.15.0",
+    "semver": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=0.12.15"
+  },
+  "dependencies": {
+    "@geek/spawn": "0.0.1-beta.4",
+    "lodash": "^4.15.0"
+  }
+}
