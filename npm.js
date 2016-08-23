@@ -15,15 +15,12 @@ module.exports = npm;
  */
 npm.install = function(pkgs, opts) {
 
-	// console.error('pkgs: ' + JSON.stringify(pkgs, null, 2));
-
 	var execArgs = ["install"];
 	var execOpts = {};
 
 	// if (opts.cwd) {
 	// 	execOpts.cwd = opts.cwd;
 	// }
-
 
 	if (_.isString(pkgs)) {
 		pkgs = [pkgs];
@@ -35,8 +32,8 @@ npm.install = function(pkgs, opts) {
 	opts = opts ? _.clone(opts) : {};
 	execArgs = execArgs.concat(pkgs);
 
-	console.error('pkgs: ' + JSON.stringify(pkgs, null, 2));
-	console.error('execArgs: ' + JSON.stringify(execArgs, null, 2));
+	// console.info('pkgs: ' + JSON.stringify(pkgs, null, 2));
+	// console.info('execArgs: ' + JSON.stringify(execArgs, null, 2));
 
 	var sync = opts.sync ? "spawnSync" : "spawn";
 
