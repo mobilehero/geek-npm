@@ -1,6 +1,6 @@
 {
   "name": "@geek/npm",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1-beta.3",
   "description": "npm api with promises",
   "keywords": [],
   "homepage": "git://github.com/mobilehero/geek-npm",
@@ -35,7 +35,7 @@
     "node": ">=0.12.15"
   },
   "dependencies": {
-    "@geek/spawn": "0.0.1-beta.4",
+    "@geek/spawn": "0.0.1-beta.5",
     "lodash": "^4.15.0"
   }
 }
