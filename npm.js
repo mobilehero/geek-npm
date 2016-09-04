@@ -1,8 +1,19 @@
+'use strict';
+
 var _ = require("lodash");
 var spawn = require("@geek/spawn");
-
+var path = require("path");
 var npm = {};
 module.exports = npm;
+const module_name = path.parse(module.id).name;
+const chalk = require("chalk");
+
+// debug logger
+var logger = (func_name) => {
+	var prefix = func_name ? `[${module_name}.${func_name}] ` : `[${module_name}`;
+	return _.wrap(require('debug')('geek-npm'), (func, msg) => func(chalk.blue(`[${module_name}.execute] `) + msg));
+}
+let debug = logger();
 
 /**
  * Run `npm install`
@@ -14,7 +25,7 @@ module.exports = npm;
  *
  */
 npm.install = function(pkgs, opts) {
-
+	let debug = logger('install');
 	var execArgs = ["install"];
 	var execOpts = {};
 
@@ -24,7 +35,7 @@ npm.install = function(pkgs, opts) {
 
 	if (_.isString(pkgs)) {
 		pkgs = [pkgs];
-	} else if( !_.isArray(pkgs) && _.isObject(pkgs)){
+	} else if (!_.isArray(pkgs) && _.isObject(pkgs)) {
 		opts = pkgs;
 		pkgs = [];
 	}
@@ -53,15 +64,20 @@ npm.install = function(pkgs, opts) {
 		execArgs.push('--registry=' + opts.registry);
 	}
 
+	if (opts.silent) {
+		execOpts.stdio = 'ignore';
+	}
+
 	delete opts.sync;
 	delete opts.global;
 	delete opts.save;
 	delete opts.saveDev;
 	delete opts.registry;
+	delete opts.silent;
 
 	_.defaults(execOpts, opts);
 	// process.stdout.write("Executing npm " + execArgs.join(" "));
-	console.error("Executing npm " + execArgs.join(" "));
+	debug("Executing: npm " + execArgs.join(" "));
 	return spawn[sync]("npm", execArgs, execOpts);
 };
 
@@ -89,9 +105,10 @@ npm.installSync = function(pkgs, opts) {
  * @param {Object}                  [opts]
  */
 npm.dedupe = function(opts) {
+	let debug = logger('dedupe');
 	opts = opts || {};
-	var sync = opts.sync ? "sync" : "async";
-	console.error("Executing npm dedupe...");
+	var sync = opts.sync ? "spawnSync" : "spawn";
+	debug("Executing: npm dedupe");
 	return spawn[sync]("npm", ["dedupe"], opts);
 };
 
@@ -103,6 +120,7 @@ npm.dedupe = function(opts) {
  * @param {Object}                  [opts]
  */
 npm.dedupeSync = function(opts) {
+	let debug = logger('dedupeSync');
 	opts = opts || {};
 	opts.sync = true;
 	return npm.dedupe(opts);
