@@ -1,6 +1,6 @@
 {
   "name": "@geek/npm",
-  "version": "0.0.2-beta.0",
+  "version": "0.0.3",
   "description": "npm api with promises",
   "keywords": [],
   "homepage": "git://github.com/mobilehero/geek-npm",
