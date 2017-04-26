@@ -1,17 +1,17 @@
 'use strict';
 
-var _ = require("lodash");
-var spawn = require("@geek/spawn");
-var path = require("path");
+var _ = require( "lodash" );
+var spawn = require( "@geek/spawn" );
+var path = require( "path" );
 var npm = {};
 module.exports = npm;
-const module_name = path.parse(module.id).name;
-const chalk = require("chalk");
+const module_name = path.parse( module.id ).name;
+const chalk = require( "chalk" );
 
 // debug logger
-var logger = (func_name) => {
+var logger = func_name => {
 	var prefix = func_name ? `[${module_name}.${func_name}] ` : `[${module_name}`;
-	return _.wrap(require('debug')('geek-npm'), (func, msg) => func(chalk.blue(`[${module_name}.execute] `) + msg));
+	return _.wrap( require( 'debug' )( 'geek-npm' ), ( func, msg ) => func( chalk.blue( `[${module_name}.execute] ` ) + msg ) );
 }
 let debug = logger();
 
@@ -24,47 +24,44 @@ let debug = logger();
  * @param {Object}                  [opts]
  *
  */
-npm.install = function(pkgs, opts) {
-	let debug = logger('install');
-	var execArgs = ["install"];
+npm.install = function ( pkgs, opts ) {
+	let debug = logger( 'install' );
+	var execArgs = [ "install" ];
 	var execOpts = {};
 
-	// if (opts.cwd) {
-	// 	execOpts.cwd = opts.cwd;
-	// }
 
-	if (_.isString(pkgs)) {
-		pkgs = [pkgs];
-	} else if (!_.isArray(pkgs) && _.isObject(pkgs)) {
+	if ( _.isString( pkgs ) ) {
+		pkgs = [ pkgs ];
+	} else if ( !_.isArray( pkgs ) && _.isObject( pkgs ) ) {
 		opts = pkgs;
 		pkgs = [];
 	}
 
-	opts = opts ? _.clone(opts) : {};
-	execArgs = execArgs.concat(pkgs);
+	opts = opts ? _.clone( opts ) : {};
+	execArgs = execArgs.concat( pkgs );
 
 	// console.info('pkgs: ' + JSON.stringify(pkgs, null, 2));
 	// console.info('execArgs: ' + JSON.stringify(execArgs, null, 2));
 
 	var sync = opts.sync ? "spawnSync" : "spawn";
 
-	if (opts.global) {
-		execArgs.push('-g');
+	if ( opts.global ) {
+		execArgs.push( '-g' );
 	}
 
-	if (opts.save) {
-		execArgs.push('--save');
+	if ( opts.save ) {
+		execArgs.push( '--save' );
 	}
 
-	if (opts.saveDev) {
-		execArgs.push('--save-dev');
+	if ( opts.saveDev ) {
+		execArgs.push( '--save-dev' );
 	}
 
-	if (opts.registry) {
-		execArgs.push('--registry=' + opts.registry);
+	if ( opts.registry ) {
+		execArgs.push( '--registry=' + opts.registry );
 	}
 
-	if (opts.silent) {
+	if ( opts.silent ) {
 		execOpts.stdio = 'ignore';
 	}
 
@@ -75,10 +72,10 @@ npm.install = function(pkgs, opts) {
 	delete opts.registry;
 	delete opts.silent;
 
-	_.defaults(execOpts, opts);
+	_.defaults( execOpts, opts );
 	// process.stdout.write("Executing npm " + execArgs.join(" "));
-	debug("Executing: npm " + execArgs.join(" "));
-	return spawn[sync]("npm", execArgs, execOpts);
+	debug( "Executing: npm " + execArgs.join( " " ) );
+	return spawn[ sync ]( "npm", execArgs, execOpts );
 };
 
 
@@ -91,10 +88,18 @@ npm.install = function(pkgs, opts) {
  * @param {Object}                  [opts]
  *
  */
-npm.installSync = function(pkgs, opts) {
+npm.installSync = function ( pkgs, opts ) {
+
+	if ( _.isString( pkgs ) ) {
+		pkgs = [ pkgs ];
+	} else if ( !_.isArray( pkgs ) && _.isObject( pkgs ) ) {
+		opts = pkgs;
+		pkgs = [];
+	}
+
 	opts = opts || {};
 	opts.sync = true;
-	return npm.install(pkgs, opts);
+	return npm.install( pkgs, opts );
 };
 
 /**
@@ -104,12 +109,12 @@ npm.installSync = function(pkgs, opts) {
  *
  * @param {Object}                  [opts]
  */
-npm.dedupe = function(opts) {
-	let debug = logger('dedupe');
+npm.dedupe = function ( opts ) {
+	let debug = logger( 'dedupe' );
 	opts = opts || {};
 	var sync = opts.sync ? "spawnSync" : "spawn";
-	debug("Executing: npm dedupe");
-	return spawn[sync]("npm", ["dedupe"], opts);
+	debug( "Executing: npm dedupe" );
+	return spawn[ sync ]( "npm", [ "dedupe" ], opts );
 };
 
 /**
@@ -119,9 +124,9 @@ npm.dedupe = function(opts) {
  *
  * @param {Object}                  [opts]
  */
-npm.dedupeSync = function(opts) {
-	let debug = logger('dedupeSync');
+npm.dedupeSync = function ( opts ) {
+	let debug = logger( 'dedupeSync' );
 	opts = opts || {};
 	opts.sync = true;
-	return npm.dedupe(opts);
+	return npm.dedupe( opts );
 };
